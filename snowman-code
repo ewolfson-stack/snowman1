@@ -1,0 +1,111 @@
+import random
+import requests
+def program():
+  thing2 = True
+  guessed = []
+  while thing2 == True:
+    thingggg = False
+    while thingggg == False:
+      try:
+        guess_amount = int(input("Do you want (1) easy mode: 7 guesses; (2) normal mode: 5 guesses; or (3) hard mode: 3 guesses?"))
+        thingggg = True
+      except ValueError:
+        print("That is not a integer. Try again")
+    if guess_amount == 1:
+      guesses = 7
+    elif guess_amount == 2:
+      guesses = 5
+    else:
+      guesses = 3
+    #used ai for the ascii art
+    print("""
+========================================
+       ❄️  WELCOME TO SNOWMAN!  ❄️
+========================================
+
+             _===_
+            (.,.)
+            ( : )
+           ( : : )
+          ( : : : )
+         ( : : : : )
+        _____________
+
+       GUESS THE WORD!
+       You have 5 guesses.
+========================================
+""")
+    #googled how to use an api
+    response = requests.get("https://random-word-api.herokuapp.com/all")
+    word_bank = response.json()
+    word = random.choice(word_bank)
+    hidden = []
+    for letter in word:
+      hidden.append("_")
+    while guesses > 0:
+      user_letter = input("Guess a letter that you think will be in the word: ")
+      if user_letter in guessed and user_letter in word:
+        guesses -= 1
+        print(f"You have already guessed that letter, so you lose a guess. You now have {guesses} guesses remaining.")
+      guessed.append(user_letter)
+      if user_letter not in word:
+        guesses -= 1
+        print(f"Wrong, you have {guesses} guesses remaining.")
+      else:
+        for i in range(len(word)):
+          if word[i] == user_letter:
+            hidden[i] = user_letter
+      print(hidden)
+      if "_" not in hidden:
+        print("Congrats! You won by guessing all of the letters!")
+        thing2 = False
+        break
+      if guesses == 0:
+        print(f"You ran out of guesses, so you lose. THe word was {word}")
+        thing2 = False
+        break
+      understandable = False
+      while understandable == False:
+        try:
+          thing = int(input("Press 1 to continue, press 2 for a hint, press 3 to guess the word."))
+          understandable = True
+        except ValueError:
+          print("That is not an integer")
+      if thing == 3:
+        guess = input("What do you think the word is? ")
+        if guess == word:
+          print(f"You got it right! The word was {word}!")
+          thing2 = False
+          break
+        else:
+          print(f"That was not the right word. You lost. The word was {word}")
+          thing2 = False
+          break
+      if thing == 4:
+        thing2 = False
+        break
+      #used ai to debug here
+      if thing == 2:
+        guesses = guesses - 2
+        print(f"You now have {guesses} guesses remaining.")
+        if hidden[0] == "_" and hidden[1] == "_":
+          hidden[0] = word[0]
+          hidden[1] = word[1]
+          def printing():
+            print(hidden)
+          printing()
+        else:
+          i = 0
+          for j in range(len(hidden)):
+            if hidden[j] != word[j]:
+              hidden[j] = word[j]
+              i += 1
+              if i == 2:
+                break
+          def printing():
+            print(hidden)
+          printing()
+    def printing():
+      print(hidden)
+    printing()
+program()
