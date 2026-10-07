@@ -1,2 +1,2 @@
-# snowman1
-My snowman game
+#My snowman game
+I made this game in my CSP2 class in high school. It is a variation of hangman, but in chatbot format. The words are picked randomly from a dictionary API. I put a lot of effort into it, and I added some customized additions. I learned a lot during this project-such as list slicing-and my teacher also allowed us to use some AI to help us. This is the most advanced interface that I have coded so far in this class, so I hope you enjoy.
